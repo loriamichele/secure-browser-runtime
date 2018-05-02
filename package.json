@@ -1,0 +1,36 @@
+{
+  "name": "secure-browser-runtime",
+  "version": "0.1.0",
+  "description": "A simple JS library to secure browser runtime and native functionalities.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loriamichele/secure-browser-runtime.git"
+  },
+  "keywords": [
+    "secure",
+    "browser",
+    "runtime",
+    "js",
+    "javascript",
+    "security",
+    "override",
+    "protect",
+    "prevent"
+  ],
+  "author": "Michele Loria <info@micheleloria.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loriamichele/secure-browser-runtime/issues"
+  },
+  "homepage": "https://github.com/loriamichele/secure-browser-runtime#readme",
+  "devDependencies": {
+    "node-readme": "^0.1.9",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.1.2"
+  }
+}
