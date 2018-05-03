@@ -31,7 +31,49 @@ _(e.g. main entrypoint for ES5+, first script in the DOM if pure HTML):_
 
 ## What happens when I load this in the browser?
 
-Basically, here's the list of properties that will be enclosed in a non-writable
+> _With Great Power Comes Great Responsibility._
+
+Have you ever stumbled upon code like this?
+
+```js
+window.addEventListener('load', function(e) {
+  console.log('Document is ready!');
+});
+```
+
+Everything seems to be ok, huh?
+
+Well, it actually _may be a possibility that the above code will not behave as
+expected_.
+
+Imagine some third-party JS script included in your page that contains something
+like this:
+
+```js
+window.addEventListener = function(eventName, callback) {
+  // Do something very evil
+}
+```
+
+At this point, everything would depend on how the third-party script developed
+the new function that is assigned to that property.
+
+To prevent this, we just wrap the properties we don't want to be overwritten,
+by using the `Object.defineProperty` and `Object.freeze` methods like this:
+
+```js
+// We store the frozen value into a constant initially
+const secureProperty = Object.freeze(window.addEventListener);
+// Then we delete the previous value
+delete window.addEventListener;
+// So that we can redefine it, also setting the `writeable` option to false
+Object.defineProperty(window, 'addEventListener', {
+  value: secureProperty,
+  writeable: false,
+});
+```
+
+Here's the full list of properties that will be enclosed in a non-writable
 extension of their initial value:
 
 | Parent object |  Property name        |
@@ -63,6 +105,8 @@ extension of their initial value:
 | `window`      | `setInterval`         |
 | `window`      | `setTimeout`          |
 | `window`      | `stop`                |
+
+## Contributing
 
 Feel free to contribute adding elements to the list, if you think they should
 be here!
