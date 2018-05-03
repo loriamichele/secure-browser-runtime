@@ -77,7 +77,7 @@ window.addEventListener = function(eventName, callback) {
 ```
 
 At this point, everything would depend on how the third-party script developed
-the new function that is assigned to that property.
+the new function which is assigned to that property.
 
 To prevent this, we just wrap the properties we don't want to be overwritten,
 by using the `Object.defineProperty` and `Object.freeze` methods like this:
