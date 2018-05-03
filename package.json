@@ -2,7 +2,7 @@
   "name": "secure-browser-runtime",
   "version": "0.1.0",
   "description": "A simple JS library to secure browser runtime and native functionalities.",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
