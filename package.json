@@ -4,7 +4,7 @@
   "description": "A simple JS library to secure browser runtime and native functionalities.",
   "main": "dist/main.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "test": "karma start --single-run",
     "test:watch": "karma start"
   },
@@ -30,6 +30,9 @@
   },
   "homepage": "https://github.com/loriamichele/secure-browser-runtime#readme",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
     "istanbul-instrumenter-loader": "^3.0.1",
     "karma": "^2.0.2",

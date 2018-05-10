@@ -3,10 +3,11 @@ Secure Browser Runtime
 [![npm version](https://badge.fury.io/js/secure-browser-runtime.svg)](https://badge.fury.io/js/secure-browser-runtime)
 [![Build Status](https://travis-ci.org/loriamichele/secure-browser-runtime.svg?branch=master)](https://travis-ci.org/loriamichele/secure-browser-runtime)
 
-This library aims to provide a simple way to prevent the rewriting or overriding
-of several fundamental browser APIs that you need to work with on a daily basis,
-saving you from suffering unpleasant headaches while trying to debug something
-you didn't write, and happens to be done by an external source.
+This (_blazing fast, **1KB** gzipped_) library aims to provide a simple
+way to prevent the rewriting or overriding of several fundamental browser APIs
+that you need to work with on a daily basis, saving you from suffering
+unpleasant headaches while trying to debug something you didn't write, and
+happens to be done by an external source.
 
 ## Installing
 
