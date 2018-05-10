@@ -28,7 +28,7 @@ Using CDN:
 <script src="https://unpkg.com/secure-browser-runtime/dist/main.js"></script>
 ```
 
-## Browsers support
+## Supported browsers
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>iOS Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
 | --------- | --------- | --------- | --------- | --------- | --------- |
@@ -60,6 +60,7 @@ Have you ever stumbled upon code like this?
 ```js
 window.addEventListener('load', function(e) {
   console.log('Document is ready!');
+  // Do some magic...
 });
 ```
 
@@ -72,7 +73,7 @@ Imagine some third-party JS script included in your page that contains something
 like this:
 
 ```js
-window.addEventListener = function(eventName, callback) {
+window.addEventListener = function(eventName, callback, ...others) {
   // Do something very evil
 }
 ```
@@ -84,9 +85,9 @@ To prevent this, we just wrap the properties we don't want to be overwritten,
 by using the `Object.defineProperty` and `Object.freeze` methods like this:
 
 ```js
-// We store the frozen value into a constant initially
+// We initially store the frozen value into a constant
 const secureProperty = Object.freeze(window.addEventListener);
-// Then we delete the previous value
+// Then we delete the reference to the previous value
 delete window.addEventListener;
 // So that we can redefine it, also setting the `writeable` option to false
 Object.defineProperty(window, 'addEventListener', {
@@ -98,42 +99,48 @@ Object.defineProperty(window, 'addEventListener', {
 Once this code is executed, every other attempt to overwrite that method will
 not work and the initial value will be kept instead.
 
+> Tip: this will likely help you too (_just in case you're thinking to do stuff
+like this and break other people's functionalities_) by throwing an error when
+trying to set values through the `=` operator or the `Object.defineProperty()`
+method, and also when trying to use the `delete` keyword.
+
 ---
 
 Here's the full list of properties that will be enclosed in a non-writable
 extension of their initial value:
 
-| Parent object |  Property name        |
-|:-------------:|:---------------------:|
-| `window`      | `addEventListener`    |
-| `window`      | `alert`               |
-| `window`      | `atob`                |
-| `window`      | `blur`                |
-| `window`      | `btoa`                |
-| `window`      | `clearInterval`       |
-| `window`      | `clearTimeout`        |
-| `window`      | `close`               |
-| `window`      | `confirm`             |
-| `window`      | `focus`               |
-| `window`      | `getComputedStyle`    |
-| `window`      | `getSelection`        |
-| `window`      | `matchMedia`          |
-| `window`      | `moveBy`              |
-| `window`      | `moveTo`              |
-| `window`      | `open`                |
-| `window`      | `print`               |
-| `window`      | `prompt`              |
-| `window`      | `removeEventListener` |
-| `window`      | `resizeBy`            |
-| `window`      | `resizeTo`            |
-| `window`      | `scroll`              |
-| `window`      | `scrollBy`            |
-| `window`      | `scrollTo`            |
-| `window`      | `setInterval`         |
-| `window`      | `setTimeout`          |
-| `window`      | `stop`                |
+| Parent object |  Property name        | Parent object  |  Property name           |
+|:-------------:|:---------------------:|:--------------:|:------------------------:|
+| **`window`**  | `addEventListener`    | **`document`** | `addEventListener`       |
+| **`window`**  | `alert`               | **`document`** | `adoptNode`              |
+| **`window`**  | `atob`                | **`document`** | `close`                  |
+| **`window`**  | `blur`                | **`document`** | `createAttribute`        |
+| **`window`**  | `btoa`                | **`document`** | `createComment`          |
+| **`window`**  | `clearInterval`       | **`document`** | `createDocumentFragment` |
+| **`window`**  | `clearTimeout`        | **`document`** | `createElement`          |
+| **`window`**  | `close`               | **`document`** | `createEvent`            |
+| **`window`**  | `confirm`             | **`document`** | `createTextNode`         |
+| **`window`**  | `focus`               | **`document`** | `execCommand`            |
+| **`window`**  | `getComputedStyle`    | **`document`** | `getElementById`         |
+| **`window`**  | `getSelection`        | **`document`** | `getElementsByClassName` |
+| **`window`**  | `matchMedia`          | **`document`** | `getElementsByName`      |
+| **`window`**  | `moveBy`              | **`document`** | `getElementsByTagName`   |
+| **`window`**  | `moveTo`              | **`document`** | `hasFocus`               |
+| **`window`**  | `open`                | **`document`** | `importNode`             |
+| **`window`**  | `print`               | **`document`** | `normalize`              |
+| **`window`**  | `prompt`              | **`document`** | `normalizeDocument`      |
+| **`window`**  | `removeEventListener` | **`document`** | `open`                   |
+| **`window`**  | `resizeBy`            | **`document`** | `querySelector`          |
+| **`window`**  | `resizeTo`            | **`document`** | `querySelectorAll`       |
+| **`window`**  | `scroll`              | **`document`** | `removeEventListener`    |
+| **`window`**  | `scrollBy`            | **`document`** | `renameNode`             |
+| **`window`**  | `scrollTo`            | **`document`** | `write`                  |
+| **`window`**  | `setInterval`         | **`document`** | `writeln`                |
+| **`window`**  | `setTimeout`          |
+| **`window`**  | `stop`                |
 
 ## Contributing
 
 Feel free to contribute adding elements to the list, if you think they should
-be here!
+be protected, or maybe improve the structure and efficiency of the algorithm!
+Why not? Everything is welcome in the Open Source world :)
