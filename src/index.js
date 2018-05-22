@@ -1,10 +1,10 @@
 import propsToRestoreMapList from './propertyList';
 
 function lockProperty({obj, property}) {
-  const secureProperty = Object.freeze(obj[property]);
+  const propertyReference = obj[property];
   delete obj[property];
   Object.defineProperty(obj, property, {
-    value: secureProperty,
+    value: propertyReference,
     writeable: false,
   });
 }

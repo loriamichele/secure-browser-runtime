@@ -86,13 +86,13 @@ To prevent this, we just wrap the properties we don't want to be overwritten,
 by using the `Object.defineProperty` and `Object.freeze` methods like this:
 
 ```js
-// We initially store the frozen value into a constant
-const secureProperty = Object.freeze(window.addEventListener);
-// Then we delete the reference to the previous value
+// We initially store the original reference into a constant
+const propertyReference = window.addEventListener;
+// Then we delete the reference to the previous value from the real object
 delete window.addEventListener;
-// So that we can redefine it, also setting the `writeable` option to false
+// So that we can redefine it, setting the `writeable` option to false
 Object.defineProperty(window, 'addEventListener', {
-  value: secureProperty,
+  value: propertyReference,
   writeable: false,
 });
 ```
@@ -103,12 +103,12 @@ not work and the initial value will be kept instead.
 > Tip: this will likely help you too (_just in case you're thinking to do stuff
 like this and break other people's functionalities_) by throwing an error when
 trying to set values through the `=` operator or the `Object.defineProperty()`
-method, and also when trying to use the `delete` keyword.
+method, and also when trying to use the `delete` keyword _in [Strict Mode]_.
 
 ---
 
 Here's the full list of properties that will be enclosed in a non-writable
-extension of their initial value:
+version of their initial value:
 
 | Parent object |  Property name        | Parent object  |  Property name           |
 |:-------------:|:---------------------:|:--------------:|:------------------------:|
@@ -145,3 +145,6 @@ extension of their initial value:
 Feel free to contribute adding elements to the list, if you think they should
 be protected, or maybe improve the structure and efficiency of the algorithm!
 Why not? Everything is welcome in the Open Source world :)
+
+
+[Strict Mode]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
