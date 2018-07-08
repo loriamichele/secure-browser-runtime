@@ -9,4 +9,8 @@ function lockProperty({obj, property}) {
   });
 }
 
-propsToRestoreMapList.map(propToRestoreMap => lockProperty(propToRestoreMap));
+propsToRestoreMapList.map(propToRestoreMap =>
+  propToRestoreMap.propsList.map(property =>
+    lockProperty({obj: propToRestoreMap.obj, property}),
+  ),
+);
